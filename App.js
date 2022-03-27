@@ -4,33 +4,49 @@ import {
   Text,
   View,
   TextInput,
-  Button,
-  TouchableOpacity,
-  TouchableHighlight,
   Pressable,
+  Alert,
+  ToastAndroid,
 } from 'react-native';
 
 const App = () => {
   const [name, setName] = React.useState('');
   const [submit, setSubmit] = React.useState(false);
   const onPressHandler = () => {
-    setSubmit(!submit);
+    if (name.length > 3)
+      setSubmit(!submit);
+    else
+      /* 
+        Alert.alert('Warning',
+        'Name must contain more than 3 characters.',
+        [
+          { text: 'OK', onPress: () => console.warn('OK hehe') }, // positive
+          { text: 'NO' }, // negative
+          { text: 'Nah' }, //neutral
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => { console.warn('Alert dismissed!') }
+        }
+      ); */
+      ToastAndroid.showWithGravityAndOffset(
+        'Teheehee',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        100,
+        200,
+      );
   }
 
   return (
     <View style={styles.body}>
       <Text style={styles.text}>Please write your name:</Text>
       <TextInput
-        // multiline
-        // keyboardType='phone-pad'
         style={styles.input}
         placeholder='Todoroki Shouto'
         onChangeText={(value) => setName(value)}
       />
-      {/*       <Button
-        title={submit ? 'clear' : 'submit'}
-        onPress={onPressHandler}
-      /> */}
+
       <Pressable
         style={({ pressed }) => [
           { backgroundColor: pressed ? '#ccccff' : '#b1b1ff' },
@@ -38,7 +54,7 @@ const App = () => {
         ]}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         android_ripple={{ color: '#fff' }}
-        onLongPress={onPressHandler}
+        onPress={onPressHandler}
       >
         <Text style={styles.text}>{submit ? 'clear' : 'submit'}</Text>
       </Pressable>
