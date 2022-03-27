@@ -5,9 +5,9 @@ import {
   View,
   TextInput,
   Pressable,
-  Alert,
-  ToastAndroid,
   Modal,
+  Image,
+  ImageBackground
 } from 'react-native';
 
 const App = () => {
@@ -19,30 +19,11 @@ const App = () => {
     if (name.length > 3)
       setSubmit(!submit);
     else setModal(true);
-    /* 
-      Alert.alert('Warning',
-      'Name must contain more than 3 characters.',
-      [
-        { text: 'OK', onPress: () => console.warn('OK hehe') }, // positive
-        { text: 'NO' }, // negative
-        { text: 'Nah' }, //neutral
-      ],
-      {
-        cancelable: true,
-        onDismiss: () => { console.warn('Alert dismissed!') }
-      }
-    ); 
-    ToastAndroid.showWithGravityAndOffset(
-      'Teheehee',
-      ToastAndroid.SHORT,
-      ToastAndroid.TOP,
-      100,
-      200,
-    ); */
   }
 
   return (
-    <View style={styles.body}>
+    <ImageBackground style={styles.body}
+      source={{ uri: 'https://i.pinimg.com/originals/7c/5b/ef/7c5bef42a1300004e3225aed435e5f07.png' }}>
       <Modal
         visible={modal}
         transparent
@@ -92,18 +73,27 @@ const App = () => {
       </Pressable>
 
       {submit ?
-        <Text style={styles.text}>Your name is {name}</Text>
+        <View style={styles.body}>
+          <Image style={styles.image}
+            source={require('./assets/done.png')}
+            resizeMode='contain'
+          />
+          <Text style={styles.text}>Your name is {name}</Text>
+        </View>
         :
-        null
+        <Image style={styles.image}
+          source={require('./assets/error.png')}
+          resizeMode='contain'
+          blurRadius={5}
+        />
       }
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     // justifyContent: 'center',
   },
@@ -163,6 +153,11 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
 
+  image: {
+    width: 100,
+    height: 100,
+    margin: 10,
+  }
 
 });
 
