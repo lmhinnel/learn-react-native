@@ -12,7 +12,7 @@ LogBox.ignoreLogs([
 
 function ScreenA({ navigation }) {
     const onPressHandler = () => {
-        navigation.navigate('ScreenB');
+        navigation.navigate('ScreenB', { message: 'Hehe' });
     }
 
     return (

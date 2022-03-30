@@ -60,7 +60,9 @@ const App = () => {
                 color={focused ? '#8888ff' : '#b1b1aa'}
               />
             )
-          }} />
+          }}
+          initialParams={{ message: 'Hello from A' }}
+        />
       </Drawer.Navigator>
     </NavigationContainer >
   );

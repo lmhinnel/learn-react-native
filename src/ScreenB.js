@@ -10,7 +10,7 @@ LogBox.ignoreLogs([
     "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
 ]);
 
-function ScreenB({ navigation }) {
+function ScreenB({ navigation, route }) {
     const onPressHandler = () => {
         navigation.toggleDrawer();
     }
@@ -26,6 +26,7 @@ function ScreenB({ navigation }) {
             >
                 <Text style={styles.text}>Toggle drawer</Text>
             </Pressable>
+            <Text style={styles.text}>{route.params?.message}</Text>
         </View>
     );
 }
