@@ -1,95 +1,112 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-} from 'react-native';
+
+import ScreenA from './ScreenA';
+import ScreenB from './ScreenB';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+import FontAwsome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { LogBox } from 'react-native';
-
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
 ]);
 
+// const Tab = createBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
-const Stack = createStackNavigator();
-
-function ScreenA({ navigation }) {
-  const onPressHandler = () => {
-    navigation.navigate('ScreenB');
-  }
-
-  return (
-    <View style={styles.body}>
-      <Text style={styles.text}>This is the content of ScreenA</Text>
-      <Pressable
-        style={({ pressed }) => [
-          { backgroundColor: pressed ? '#ccccff' : '#b1b1ff' }
-        ]}
-        onPress={onPressHandler}
-      >
-        <Text style={styles.text}>Go to ScreenB</Text>
-      </Pressable>
-    </View>
-  );
-}
-
-function ScreenB({ navigation }) {
-  const onPressHandler = () => {
-    navigation.goBack();
-  }
-
-  return (
-    <View style={styles.body}>
-      <Text style={styles.text}>This is the content of ScreenB</Text>
-      <Pressable
-        style={({ pressed }) => [
-          { backgroundColor: pressed ? '#ccccff' : '#b1b1ff' }
-        ]}
-        onPress={onPressHandler}
-      >
-        <Text style={styles.text}>Go back to ScreenA</Text>
-      </Pressable>
-    </View>
-  );
-}
-
-const App = () => {
-
+/* const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
+      <Tab.Navigator
+        // activeColor='#b1b1ff'
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, size, color }) => {
+            let iconName;
+            size = focused ? 25 : 20;
+            // color = focused ? '#b1b1ff' : '#ccccff'
+            if (route.name === 'ScreenA') {
+              iconName = 'font';
+            } else if (route.name === 'ScreenB') {
+              iconName = 'bold';
+            }
+            return (
+              <FontAwsome5
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            )
+          },
+          tabBarActiveTintColor: '#5555aa',
+          tabBarActiveBackgroundColor: '#ffb1b1',
+          tabBarShowLabel: true,
+          tabBarLabelStyle: { fontSize: 12 }
+        })}
+      >
+        <Tab.Screen
           name="ScreenA"
           component={ScreenA}
           options={{
-            header: () => null
+            tabBarBadge: 3
           }}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="ScreenB"
           component={ScreenB}
         />
-      </Stack.Navigator>
+      </Tab.Navigator>
     </NavigationContainer>
   );
+}; */
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, size, color }) => {
+            let iconName;
+            size = focused ? 25 : 20;
+            // color = focused ? '#b1b1ff' : '#ccccff'
+            if (route.name === 'ScreenA') {
+              iconName = 'font';
+            } else if (route.name === 'ScreenB') {
+              iconName = 'bold';
+            }
+            return (
+              <FontAwsome5
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            )
+          },
+        })}
+        activeColor='#5544aa'
+        inactiveColor='#a1a1a1'
+        barStyle={{
+          backgroundColor: '#ccccff'
+        }}
+        tabBarIcon={true}
+      >
+        <Tab.Screen
+          name="ScreenA"
+          component={ScreenA}
+          options={{
+            tabBarBadge: 3
+          }}
+        />
+        <Tab.Screen
+          name="ScreenB"
+          component={ScreenB}
+        />
+      </Tab.Navigator>
+    </NavigationContainer >
+  );
 };
-
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  text: {
-    fontWeight: '900',
-    fontSize: 30,
-  }
-});
 
 export default App;
