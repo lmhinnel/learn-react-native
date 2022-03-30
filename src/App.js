@@ -3,170 +3,93 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   Pressable,
-  Modal,
-  Image,
-  ImageBackground
 } from 'react-native';
-import CPressable from './CPressable';
 
-import Header from './Header';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const App = () => {
-  const [name, setName] = React.useState('');
-  const [submit, setSubmit] = React.useState(false);
-  const [modal, setModal] = React.useState(false);
+import { LogBox } from 'react-native';
 
+LogBox.ignoreLogs([
+  "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
+]);
+
+
+const Stack = createStackNavigator();
+
+function ScreenA({ navigation }) {
   const onPressHandler = () => {
-    if (name.length > 3)
-      setSubmit(!submit);
-    else setModal(true);
+    navigation.navigate('ScreenB');
   }
 
   return (
-    <ImageBackground style={styles.body}
-      source={{ uri: 'https://i.pinimg.com/originals/7c/5b/ef/7c5bef42a1300004e3225aed435e5f07.png' }}>
-      <Header />
-      <Modal
-        visible={modal}
-        transparent
-        onRequestClose={() => {
-          setModal(false)
-        }}
-        animationType='slide'
-        hardwareAccelerated
-      >
-        <View style={styles.center_view}>
-          <View style={styles.warning_modal}>
-            <View style={[styles.warning_title]}>
-              <Text style={styles.text}>Warning</Text>
-            </View>
-            <View style={styles.warning_body}>
-              <Text style={styles.text}>Teheehee</Text>
-            </View>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: pressed ? '#ccccff' : '#b1b1ff' },
-                styles.warning_OK]}
-              android_ripple={{ color: '#fff' }}
-              onPress={() => setModal(false)}
-            >
-              <Text style={styles.text}>OK</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-      <Text style={styles.text}>Please write your name:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder='Todoroki Shouto'
-        onChangeText={(value) => setName(value)}
-      />
-
-      <CPressable
-        onPressHandler={onPressHandler}
-        submit={submit}
-      />
-      {/*       <Pressable
+    <View style={styles.body}>
+      <Text style={styles.text}>This is the content of ScreenA</Text>
+      <Pressable
         style={({ pressed }) => [
-          { backgroundColor: pressed ? '#ccccff' : '#b1b1ff' },
-          { borderRadius: 10 },
+          { backgroundColor: pressed ? '#ccccff' : '#b1b1ff' }
         ]}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        android_ripple={{ color: '#fff' }}
         onPress={onPressHandler}
       >
-        <Text style={styles.text}>{submit ? 'clear' : 'submit'}</Text>
+        <Text style={styles.text}>Go to ScreenB</Text>
       </Pressable>
- */}
-      {submit ?
-        <View style={styles.body}>
-          <Image style={styles.image}
-            source={require('../assets/done.png')}
-            resizeMode='contain'
-          />
-          <Text style={styles.text}>Your name is {name}</Text>
-        </View>
-        :
-        <Image style={styles.image}
-          source={require('../assets/error.png')}
-          resizeMode='contain'
-          blurRadius={5}
+    </View>
+  );
+}
+
+function ScreenB({ navigation }) {
+  const onPressHandler = () => {
+    navigation.goBack();
+  }
+
+  return (
+    <View style={styles.body}>
+      <Text style={styles.text}>This is the content of ScreenB</Text>
+      <Pressable
+        style={({ pressed }) => [
+          { backgroundColor: pressed ? '#ccccff' : '#b1b1ff' }
+        ]}
+        onPress={onPressHandler}
+      >
+        <Text style={styles.text}>Go back to ScreenA</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+const App = () => {
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="ScreenA"
+          component={ScreenA}
+          options={{
+            header: () => null
+          }}
         />
-      }
-    </ImageBackground>
+        <Stack.Screen
+          name="ScreenB"
+          component={ScreenB}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
   body: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    // justifyContent: 'center',
-  },
-
-  input: {
-    borderColor: '#6463AF',
-    borderWidth: 2,
-    borderRadius: 10,
-    width: 280,
-    padding: 10,
-    fontSize: 18,
-    marginBottom: 10,
   },
 
   text: {
-    color: '#6463AF',
-    fontSize: 24,
-    fontWeight: 'bold',
-    margin: 10,
-    textAlign: 'center',
-  },
-
-  button: {
-    backgroundColor: '#b1b1ff',
-    borderRadius: 10,
-  },
-  center_view: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: "#ffc8c870",
-  },
-
-  warning_modal: {
-    width: 200,
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: '#ffc8c8',
-  },
-
-  warning_title: {
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffc8c8',
-  },
-
-  warning_body: {
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  warning_OK: {
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-
-  image: {
-    width: 100,
-    height: 100,
-    margin: 10,
+    fontWeight: '900',
+    fontSize: 30,
   }
-
 });
 
 export default App;
