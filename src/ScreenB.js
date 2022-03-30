@@ -12,7 +12,7 @@ LogBox.ignoreLogs([
 
 function ScreenB({ navigation }) {
     const onPressHandler = () => {
-        navigation.goBack();
+        navigation.toggleDrawer();
     }
 
     return (
@@ -24,7 +24,7 @@ function ScreenB({ navigation }) {
                 ]}
                 onPress={onPressHandler}
             >
-                <Text style={styles.text}>Go back to ScreenA</Text>
+                <Text style={styles.text}>Toggle drawer</Text>
             </Pressable>
         </View>
     );
