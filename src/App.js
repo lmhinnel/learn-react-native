@@ -96,9 +96,6 @@ const App = () => {
         <Tab.Screen
           name="ScreenA"
           component={ScreenA}
-          options={{
-            tabBarBadge: 3
-          }}
         />
         <Tab.Screen
           name="ScreenB"
