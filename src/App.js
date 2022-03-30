@@ -9,6 +9,9 @@ import {
   Image,
   ImageBackground
 } from 'react-native';
+import CPressable from './CPressable';
+
+import Header from './Header';
 
 const App = () => {
   const [name, setName] = React.useState('');
@@ -24,6 +27,7 @@ const App = () => {
   return (
     <ImageBackground style={styles.body}
       source={{ uri: 'https://i.pinimg.com/originals/7c/5b/ef/7c5bef42a1300004e3225aed435e5f07.png' }}>
+      <Header />
       <Modal
         visible={modal}
         transparent
@@ -60,7 +64,11 @@ const App = () => {
         onChangeText={(value) => setName(value)}
       />
 
-      <Pressable
+      <CPressable
+        onPressHandler={onPressHandler}
+        submit={submit}
+      />
+      {/*       <Pressable
         style={({ pressed }) => [
           { backgroundColor: pressed ? '#ccccff' : '#b1b1ff' },
           { borderRadius: 10 },
@@ -71,18 +79,18 @@ const App = () => {
       >
         <Text style={styles.text}>{submit ? 'clear' : 'submit'}</Text>
       </Pressable>
-
+ */}
       {submit ?
         <View style={styles.body}>
           <Image style={styles.image}
-            source={require('./assets/done.png')}
+            source={require('../assets/done.png')}
             resizeMode='contain'
           />
           <Text style={styles.text}>Your name is {name}</Text>
         </View>
         :
         <Image style={styles.image}
-          source={require('./assets/error.png')}
+          source={require('../assets/error.png')}
           resizeMode='contain'
           blurRadius={5}
         />
