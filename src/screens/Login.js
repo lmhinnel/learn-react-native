@@ -12,6 +12,7 @@ import CPressable from '../utils/CPressable';
 import sqlite from 'react-native-sqlite-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { setName, setAge } from '../redux/actions';
+import PushNotification from 'react-native-push-notification';
 
 const db = sqlite.openDatabase(
     {
@@ -32,6 +33,7 @@ function Login({ navigation }) {
     React.useEffect(() => {
         createTable();
         getData();
+        createChannels();
     }, []);
 
     const createTable = () => {
@@ -42,6 +44,15 @@ function Login({ navigation }) {
                 + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Age INTEGER);"
             )
         })
+    }
+
+    const createChannels = () => {
+        PushNotification.createChannel(
+            {
+                channelId: 'test-channel',
+                channelName: 'Test Channel'
+            }
+        )
     }
 
     const getData = () => {

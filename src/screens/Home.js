@@ -6,6 +6,7 @@ import {
     TextInput,
     Alert,
     FlatList,
+    TouchableOpacity,
 } from 'react-native';
 
 import GlobalStyle from '../utils/GlobalStyle';
@@ -15,6 +16,7 @@ import CPressable from '../utils/CPressable';
 import sqlite from 'react-native-sqlite-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { setName, setAge, increaseAge, getCities } from '../redux/actions';
+import PushNotification from 'react-native-push-notification';
 
 const db = sqlite.openDatabase(
     {
@@ -37,6 +39,28 @@ function Home({ navigation }) {
         getData();
         dispatch(getCities());
     }, []);
+
+    const handleNotification = (item, id) => {
+        // PushNotification.cancelAllLocalNotifications();
+        // PushNotification.cancelLocalNotification({ id: 3 });
+
+        // push notif immediately when click 
+        PushNotification.localNotification({
+            channelId: 'test-channel',
+            title: "Hello from " + item.country,
+            message: item.city + " says HI",
+            id: id, // to not make duplicate notif
+        })
+
+        // push after 20s
+        PushNotification.localNotificationSchedule({
+            channelId: "test-channel",
+            title: 'Alarm',
+            message: 'Hello again after 20s from ' + item.country,
+            date: new Date(Date.now() + 20000),
+            allowWhileIdle: true,
+        })
+    };
 
     const getData = () => {
         try {
@@ -114,14 +138,17 @@ function Home({ navigation }) {
             <FlatList
                 data={cities}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Text style={[GlobalStyle.CustomFont, styles.text]}>
-                            {item.country} has {item.city}.
-                        </Text>
-                    </View>
-                )
-                }
+                renderItem={({ item, id }) => (
+                    <TouchableOpacity
+                        onPress={() => handleNotification(item, id)}
+                    >
+                        <View style={styles.item}>
+                            <Text style={[GlobalStyle.CustomFont, styles.text]}>
+                                {item.country} has {item.city}.
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                )}
             />
             {/* <Text style={[
                 GlobalStyle.CustomFont,
@@ -177,11 +204,11 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     item: {
-        backgroundColor: '#b1b1ff',
+        backgroundColor: '#c9c9ff',
         borderRadius: 5,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: '#6464AF',
-        margin: 6,
+        margin: 4,
         justifyContent: 'center',
         alignItems: 'center',
     }
