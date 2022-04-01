@@ -8,6 +8,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import FontAwsome5 from 'react-native-vector-icons/FontAwesome5';
 
+import { Provider } from 'react-redux';
+import { Store } from './redux/store';
+
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
@@ -17,53 +20,55 @@ const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName='Login'
-        screenOptions={{
-          drawerPosition: 'right',
-          drawerType: 'front',
-          swipeEdgeWidth: 100,
-          drawerStyle: {
-            backgroundColor: '#ececff',
-            width: 200
-          },
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerStyle: {
-            backgroundColor: '#ececff'
-          }
-        }}
-      >
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            drawerIcon: ({ focused }) => (
-              <FontAwsome5
-                name='bold'
-                size={focused ? 22 : 20}
-                color={focused ? '#8888ff' : '#b1b1aa'}
-              />
-            )
+    <Provider store={Store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName='Login'
+          screenOptions={{
+            drawerPosition: 'right',
+            drawerType: 'front',
+            swipeEdgeWidth: 100,
+            drawerStyle: {
+              backgroundColor: '#ececff',
+              width: 200
+            },
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#ececff'
+            }
           }}
-          initialParams={{ message: 'Hello from A' }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            drawerIcon: ({ focused }) => (
-              <FontAwsome5
-                name='font'
-                size={focused ? 22 : 20}
-                color={focused ? '#8888ff' : '#b1b1aa'}
-              />
-            )
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer >
+        >
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              drawerIcon: ({ focused }) => (
+                <FontAwsome5
+                  name='bold'
+                  size={focused ? 22 : 20}
+                  color={focused ? '#8888ff' : '#b1b1aa'}
+                />
+              )
+            }}
+            initialParams={{ message: 'Hello from A' }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              drawerIcon: ({ focused }) => (
+                <FontAwsome5
+                  name='font'
+                  size={focused ? 22 : 20}
+                  color={focused ? '#8888ff' : '#b1b1aa'}
+                />
+              )
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer >
+    </Provider>
   );
 };
 

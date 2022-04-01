@@ -12,6 +12,8 @@ import CPressable from '../utils/CPressable';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import sqlite from 'react-native-sqlite-storage';
+import { useSelector, useDispatch } from 'react-redux';
+import { setName, setAge, increaseAge } from '../redux/actions';
 
 const db = sqlite.openDatabase(
     {
@@ -24,8 +26,11 @@ const db = sqlite.openDatabase(
 
 
 function Home({ navigation }) {
-    const [name, setName] = React.useState('');
-    const [age, setAge] = React.useState();
+    const { name, age } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
+
+    // const [name, setName] = React.useState('');
+    // const [age, setAge] = React.useState();
 
     React.useEffect(() => {
         getData();
@@ -50,8 +55,8 @@ function Home({ navigation }) {
                         if (len > 0) {
                             var userName = results.rows.item(0).Name;
                             var userAge = results.rows.item(0).Age;
-                            setName(userName);
-                            setAge(userAge);
+                            dispatch(setName(userName));
+                            dispatch(setAge(userAge));
                         }
                     }
                 )
@@ -115,7 +120,7 @@ function Home({ navigation }) {
             <TextInput
                 style={styles.input}
                 placeholder='Enter your name'
-                onChangeText={(value) => setName(value)}
+                onChangeText={(value) => dispatch(setName(value))}
                 defaultValue={name}
             />
             <CPressable
@@ -125,6 +130,10 @@ function Home({ navigation }) {
             <CPressable
                 title='Remove'
                 onPressHandler={removeData}
+            />
+            <CPressable
+                title='Age++'
+                onPressHandler={() => dispatch(increaseAge())}
             />
         </View >
     );

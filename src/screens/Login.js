@@ -10,6 +10,8 @@ import {
 import CPressable from '../utils/CPressable';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import sqlite from 'react-native-sqlite-storage';
+import { useSelector, useDispatch } from 'react-redux';
+import { setName, setAge } from '../redux/actions';
 
 const db = sqlite.openDatabase(
     {
@@ -21,8 +23,11 @@ const db = sqlite.openDatabase(
 );
 
 function Login({ navigation }) {
-    const [name, setName] = React.useState('');
-    const [age, setAge] = React.useState();
+    const { name, age } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
+
+    // const [name, setName] = React.useState('');
+    // const [age, setAge] = React.useState();
 
     React.useEffect(() => {
         createTable();
@@ -73,6 +78,8 @@ function Login({ navigation }) {
                                     age: age,
                                 }
                                 await AsyncStorage.setItem('user', JSON.stringify(user)); */
+                dispatch(setName(name));
+                dispatch(setAge(age));
                 await db.transaction(async (tx) => {
                     // await tx.executeSql(
                     //     "INSERT INTO Users (Name, Age) VALUES ('" + name + "', " + age + ")"
@@ -97,18 +104,16 @@ function Login({ navigation }) {
                 style={styles.logo}
                 source={require('../../assets/logo.png')}
             />
-            <Text style={styles.text}>
-                Async Storage
-            </Text>
+            <Text style={styles.text}>REDUX</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Enter your name'
-                onChangeText={(value) => setName(value)}
+                onChangeText={(value) => dispatch(setName(value))}
             />
             <TextInput
                 style={styles.input}
                 placeholder='Enter your age'
-                onChangeText={(value) => setAge(value)}
+                onChangeText={(value) => dispatch(setAge(value))}
                 keyboardType={'number-pad'}
             />
             <CPressable
