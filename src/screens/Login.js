@@ -8,23 +8,56 @@ import {
     Alert
 } from 'react-native';
 import CPressable from '../utils/CPressable';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import sqlite from 'react-native-sqlite-storage';
+
+const db = sqlite.openDatabase(
+    {
+        name: 'MainDB',
+        location: 'default',
+    },
+    () => { },
+    error => { console.log(error) },
+);
 
 function Login({ navigation }) {
     const [name, setName] = React.useState('');
     const [age, setAge] = React.useState();
 
     React.useEffect(() => {
+        createTable();
         getData();
     }, []);
 
+    const createTable = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "CREATE TABLE IF NOT EXISTS "
+                + "Users "
+                + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Age INTEGER);"
+            )
+        })
+    }
+
     const getData = () => {
         try {
-            AsyncStorage.getItem('user')
-                .then(value => {
-                    if (value != null)
-                        navigation.navigate('Home');
-                })
+            /*             AsyncStorage.getItem('user')
+                            .then(value => {
+                                if (value != null)
+                                    navigation.navigate('Home');
+                            }) */
+            db.transaction((tx) => {
+                tx.executeSql(
+                    "SELECT Name, Age FROM Users ",
+                    [],
+                    (tx, results) => {
+                        var len = results.rows.length;
+                        if (len > 0) {
+                            navigation.navigate('Home');
+                        }
+                    }
+                )
+            })
         } catch (err) {
             console.log(err);
         }
@@ -35,12 +68,22 @@ function Login({ navigation }) {
             Alert.alert('Warning!', 'Please write your name');
         } else {
             try {
-                var user = {
-                    name: name,
-                    age: age,
-                }
-                await AsyncStorage.setItem('user', JSON.stringify(user));
-                // Alert.alert('Success!', 'Data is updated');
+                /*                 var user = {
+                                    name: name,
+                                    age: age,
+                                }
+                                await AsyncStorage.setItem('user', JSON.stringify(user)); */
+                await db.transaction(async (tx) => {
+                    // await tx.executeSql(
+                    //     "INSERT INTO Users (Name, Age) VALUES ('" + name + "', " + age + ")"
+                    // );
+
+                    await tx.executeSql(
+                        "INSERT INTO Users (Name, Age) VALUES (?,?)",
+                        [name, age]
+                    );
+
+                })
                 navigation.navigate('Home');
             } catch (error) {
                 console.log(error);
@@ -66,6 +109,7 @@ function Login({ navigation }) {
                 style={styles.input}
                 placeholder='Enter your age'
                 onChangeText={(value) => setAge(value)}
+                keyboardType={'number-pad'}
             />
             <CPressable
                 title='Login'
