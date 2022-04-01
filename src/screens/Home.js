@@ -5,6 +5,7 @@ import {
     View,
     TextInput,
     Alert,
+    FlatList,
 } from 'react-native';
 
 import GlobalStyle from '../utils/GlobalStyle';
@@ -13,7 +14,7 @@ import CPressable from '../utils/CPressable';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import sqlite from 'react-native-sqlite-storage';
 import { useSelector, useDispatch } from 'react-redux';
-import { setName, setAge, increaseAge } from '../redux/actions';
+import { setName, setAge, increaseAge, getCities } from '../redux/actions';
 
 const db = sqlite.openDatabase(
     {
@@ -26,7 +27,7 @@ const db = sqlite.openDatabase(
 
 
 function Home({ navigation }) {
-    const { name, age } = useSelector(state => state.userReducer);
+    const { name, age, cities } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
 
     // const [name, setName] = React.useState('');
@@ -34,6 +35,7 @@ function Home({ navigation }) {
 
     React.useEffect(() => {
         getData();
+        dispatch(getCities());
     }, []);
 
     const getData = () => {
@@ -109,7 +111,19 @@ function Home({ navigation }) {
 
     return (
         <View style={styles.body}>
-            <Text style={[
+            <FlatList
+                data={cities}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                        <Text style={[GlobalStyle.CustomFont, styles.text]}>
+                            {item.country} has {item.city}.
+                        </Text>
+                    </View>
+                )
+                }
+            />
+            {/* <Text style={[
                 GlobalStyle.CustomFont,
                 styles.text
             ]}>
@@ -134,7 +148,7 @@ function Home({ navigation }) {
             <CPressable
                 title='Age++'
                 onPressHandler={() => dispatch(increaseAge())}
-            />
+            /> */}
         </View >
     );
 }
@@ -147,8 +161,8 @@ const styles = StyleSheet.create({
     },
 
     text: {
-        fontSize: 50,
-        marginBottom: 20,
+        fontSize: 40,
+        // marginBottom: 20,
     },
 
     input: {
@@ -162,6 +176,15 @@ const styles = StyleSheet.create({
         marginTop: 40,
         marginBottom: 20,
     },
+    item: {
+        backgroundColor: '#b1b1ff',
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#6464AF',
+        margin: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });
 
 export default Home;

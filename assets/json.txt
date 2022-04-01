@@ -1,0 +1,25 @@
+[
+    {
+        "country": "United States",
+        "city": "New York"
+    },
+    {
+        "country": "Australia",
+        "city": "Sydney"
+    },
+    {
+        "country": "Germany",
+        "city": "Berlin"
+    },
+    {
+        "country": "Viet Nam",
+        "city": "Ha Noi"
+    },
+    {
+        "country": "Japan",
+        "city": "Tokyo"
+    }
+]
+
+// Fake API:
+// https://mocki.io/v1/f7fc68a1-9b67-4f54-8976-925755e19fda
