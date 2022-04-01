@@ -2,12 +2,12 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     CustomFont: {
-        fontFamily: 'LavishlyYours-Regular',
+        fontFamily: 'SVNChickenNoodleSoup-Regular',
         // fontWeight: '700',
     },
 
     ButtonText: {
-        fontFamily: 'SVNChickenNoodleSoup-Regular',
+        fontFamily: 'LavishlyYours-Regular',
         fontSize: 30,
         padding: 10,
     }

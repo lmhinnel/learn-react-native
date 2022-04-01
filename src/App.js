@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 
-import ScreenA from './screens/ScreenA';
-import ScreenB from './screens/ScreenB';
+import Home from './screens/Home';
+import Login from './screens/Login';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import FontAwsome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { LogBox } from 'react-native';
@@ -13,13 +13,13 @@ LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
 ]);
 
-const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName='ScreenB'
+      <Stack.Navigator
+        initialRouteName='Login'
         screenOptions={{
           drawerPosition: 'right',
           drawerType: 'front',
@@ -35,23 +35,9 @@ const App = () => {
           }
         }}
       >
-        <Drawer.Screen
-          name="ScreenA"
-          component={ScreenA}
-          options={{
-            title: 'CreenA',
-            drawerIcon: ({ focused }) => (
-              <FontAwsome5
-                name='font'
-                size={focused ? 22 : 20}
-                color={focused ? '#8888ff' : '#b1b1aa'}
-              />
-            )
-          }}
-        />
-        <Drawer.Screen
-          name="ScreenB"
-          component={ScreenB}
+        <Stack.Screen
+          name="Login"
+          component={Login}
           options={{
             drawerIcon: ({ focused }) => (
               <FontAwsome5
@@ -63,7 +49,20 @@ const App = () => {
           }}
           initialParams={{ message: 'Hello from A' }}
         />
-      </Drawer.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            drawerIcon: ({ focused }) => (
+              <FontAwsome5
+                name='font'
+                size={focused ? 22 : 20}
+                color={focused ? '#8888ff' : '#b1b1aa'}
+              />
+            )
+          }}
+        />
+      </Stack.Navigator>
     </NavigationContainer >
   );
 };
