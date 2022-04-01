@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 
-import ScreenA from './ScreenA';
-import ScreenB from './ScreenB';
+import ScreenA from './screens/ScreenA';
+import ScreenB from './screens/ScreenB';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
