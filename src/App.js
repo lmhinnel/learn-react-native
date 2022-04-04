@@ -3,6 +3,9 @@ import React from 'react';
 
 import Home from './screens/Home';
 import Login from './screens/Login';
+import Map from './screens/Map';
+import Camera from './screens/Camera';
+
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -42,29 +45,19 @@ const App = () => {
           <Stack.Screen
             name="Login"
             component={Login}
-            options={{
-              drawerIcon: ({ focused }) => (
-                <FontAwsome5
-                  name='bold'
-                  size={focused ? 22 : 20}
-                  color={focused ? '#8888ff' : '#b1b1aa'}
-                />
-              )
-            }}
             initialParams={{ message: 'Hello from A' }}
           />
           <Stack.Screen
             name="Home"
             component={Home}
-            options={{
-              drawerIcon: ({ focused }) => (
-                <FontAwsome5
-                  name='font'
-                  size={focused ? 22 : 20}
-                  color={focused ? '#8888ff' : '#b1b1aa'}
-                />
-              )
-            }}
+          />
+          <Stack.Screen
+            name="Map"
+            component={Map}
+          />
+          <Stack.Screen
+            name="Camera"
+            component={Camera}
           />
         </Stack.Navigator>
       </NavigationContainer >

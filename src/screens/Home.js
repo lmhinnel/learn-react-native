@@ -41,8 +41,6 @@ function Home({ navigation }) {
     }, []);
 
     const handleNotification = (item, id) => {
-        // PushNotification.cancelAllLocalNotifications();
-        // PushNotification.cancelLocalNotification({ id: 3 });
 
         // push notif immediately when click 
         PushNotification.localNotification({
@@ -135,12 +133,19 @@ function Home({ navigation }) {
 
     return (
         <View style={styles.body}>
+            <CPressable
+                title='Open camera'
+                onPressHandler={() => navigation.navigate('Camera')}
+            />
             <FlatList
                 data={cities}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, id }) => (
                     <TouchableOpacity
-                        onPress={() => handleNotification(item, id)}
+                        onPress={() => {
+                            handleNotification(item, id);
+                            navigation.navigate('Map', { city: item.city });
+                        }}
                     >
                         <View style={styles.item}>
                             <Text style={[GlobalStyle.CustomFont, styles.text]}>
