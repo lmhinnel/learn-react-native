@@ -1,65 +1,99 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 
-import Home from './screens/Home';
-import Login from './screens/Login';
-import Map from './screens/Map';
-import Camera from './screens/Camera';
-
+import Splash from './screens/Splash';
+import ToDo from './screens/ToDo';
+import Done from './screens/Done';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwsome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { Provider } from 'react-redux';
 import { Store } from './redux/store';
 
 import { LogBox } from 'react-native';
+import Task from './screens/Task';
+import Camera from './screens/Camera';
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
 ]);
 
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+export function HomeTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={
+        ({ route }) => ({
+          tabBarIcon: ({ focused, size, color }) => {
+            let name;
+            size = focused ? 25 : 20;
+            if (route.name === 'To-Do') name = 'clipboard-list';
+            else if (route.name === 'Done') name = 'clipboard-check';
+            return (
+              <FontAwsome5
+                name={name}
+                size={size}
+                color={color}
+              />
+            )
+          },
+          headerShown: false,
+          tabBarActiveTintColor: '#6464af',
+          tabBarInactiveTintColor: '#7777',
+          tabBarLabelStyle: { fontSize: 15, fontWeight: 'bold' }
+        })
+      }
+    >
+      <Tab.Screen name={'To-Do'} component={ToDo} />
+      <Tab.Screen name={'Done'} component={Done} />
+    </Tab.Navigator>
+  );
+}
+
+const RootStack = createStackNavigator();
 
 const App = () => {
   return (
     <Provider store={Store}>
       <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName='Login'
+        <RootStack.Navigator
+          initialRouteName='Splash'
           screenOptions={{
-            drawerPosition: 'right',
-            drawerType: 'front',
-            swipeEdgeWidth: 100,
-            drawerStyle: {
-              backgroundColor: '#ececff',
-              width: 200
-            },
-            headerShown: true,
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#ececff'
+              backgroundColor: '#6464af'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontSize: 25,
+              fontWeight: 'bold'
             }
           }}
         >
-          <Stack.Screen
-            name="Login"
-            component={Login}
+          <RootStack.Screen
+            name="Splash"
+            component={Splash}
             initialParams={{ message: 'Hello from A' }}
+            options={{
+              headerShown: false
+            }}
           />
-          <Stack.Screen
-            name="Home"
-            component={Home}
+          <RootStack.Screen
+            name="My Tasks"
+            component={HomeTabs}
           />
-          <Stack.Screen
-            name="Map"
-            component={Map}
+          <RootStack.Screen
+            name="Task"
+            component={Task}
           />
-          <Stack.Screen
+          <RootStack.Screen
             name="Camera"
             component={Camera}
           />
-        </Stack.Navigator>
+        </RootStack.Navigator>
       </NavigationContainer >
     </Provider>
   );
