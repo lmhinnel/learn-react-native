@@ -1,4 +1,4 @@
-package com.mainapp;
+package com.todocat;
 
 import com.facebook.react.ReactActivity;
 

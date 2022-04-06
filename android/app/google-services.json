@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:269835334758:android:f870cbadb4ba88c21629a7",
         "android_client_info": {
-          "package_name": "com.mainapp"
+          "package_name": "com.todocat"
         }
       },
       "oauth_client": [
