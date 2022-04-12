@@ -140,7 +140,14 @@ function Home({ navigation }) {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, id }) => (
                     <TouchableOpacity
-                        onPress={() => handleNotification(item, id)}
+                        onPress={() => {
+                            handleNotification(item, id);
+                            navigation.navigate('Map', {
+                                city: item.city,
+                                lat: item.lat,
+                                lng: item.lng,
+                            });
+                        }}
                     >
                         <View style={styles.item}>
                             <Text style={[GlobalStyle.CustomFont, styles.text]}>

@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import { Store } from './redux/store';
 
 import { LogBox } from 'react-native';
+import Map from './screens/Map';
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
 ]);
@@ -43,28 +44,17 @@ const App = () => {
             name="Login"
             component={Login}
             options={{
-              drawerIcon: ({ focused }) => (
-                <FontAwsome5
-                  name='bold'
-                  size={focused ? 22 : 20}
-                  color={focused ? '#8888ff' : '#b1b1aa'}
-                />
-              )
+              headerShown: false,
             }}
             initialParams={{ message: 'Hello from A' }}
           />
           <Stack.Screen
             name="Home"
             component={Home}
-            options={{
-              drawerIcon: ({ focused }) => (
-                <FontAwsome5
-                  name='font'
-                  size={focused ? 22 : 20}
-                  color={focused ? '#8888ff' : '#b1b1aa'}
-                />
-              )
-            }}
+          />
+          <Stack.Screen
+            name="Map"
+            component={Map}
           />
         </Stack.Navigator>
       </NavigationContainer >

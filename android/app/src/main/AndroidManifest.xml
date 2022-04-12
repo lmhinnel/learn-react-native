@@ -24,6 +24,11 @@
         </intent-filter>
       </activity>
 
+       <meta-data
+        android:name="com.google.android.geo.API_KEY"
+         android:value="AIzaSyCcTfYtpmGzfmN3W_Lz3JBXhAQ1ETWPjVw"/>
+
+
       <!-- Change the value to true to enable pop-up for in foreground on receiving remote notifications (for prevent duplicating while showing local notifications set this to false) -->
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
                   android:value="false"/>
@@ -48,6 +53,8 @@
               <action android:name="com.google.firebase.MESSAGING_EVENT" />
           </intent-filter>
       </service>
+
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     
     </application>
 </manifest>
