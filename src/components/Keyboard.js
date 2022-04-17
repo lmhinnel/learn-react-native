@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGuess, setGuessList, setBoard, setRow } from '../redux/actions';
+import { setGuess, setBoard, setRow } from '../redux/actions';
 import { GlobalStyles } from '../styles/GlobalStyles';
 import { MAX_WORD_LENGTH } from '../utils/GameUtils';
 
@@ -18,21 +18,22 @@ const Keys = [
 ];
 
 const Keyboard = () => {
-    const { guess, guessList, disabled, board, row } = useSelector(state => state.gameReducer);
+    const { guess, disabled, board, row } = useSelector(state => state.gameReducer);
     const dispatch = useDispatch();
 
     const handleKeyPress = (key) => {
         switch (key) {
             case SpecialKeys.DELETE:
+                if (guess.length != 0) {
+                    var b = board;
+                    b[row][guess.length - 1] = '';
+                    dispatch(setBoard(b));
+                }
                 dispatch(setGuess(guess.slice(0, -1)));
                 break;
             case SpecialKeys.GUESS:
                 if (guess.length != 5) break;
-                var b = board;
-                b[row] = guess.split('');
-                dispatch(setBoard(b));
                 dispatch(setRow(row + 1));
-                // dispatch(setGuessList([...guessList, guess]));
                 dispatch(setGuess(''));
                 break;
             default:
@@ -60,7 +61,7 @@ const Keyboard = () => {
                                 <Pressable
                                     key={key}
                                     disabled={dis}
-                                    onPress={() => {handleKeyPress(key);}}
+                                    onPress={() => { handleKeyPress(key); }}
                                     style={[styles.cell,
                                     dis && styles.cellDisabled]}
                                 >

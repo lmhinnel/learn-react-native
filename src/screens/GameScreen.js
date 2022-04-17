@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, Modal } from 'react-native';
-import Cpressable from '../components/Cpressable';
+import { StyleSheet, View, Modal } from 'react-native';
 import Keyboard from '../components/Keyboard';
 import TextBlock, { TextBlockState } from '../components/TextBlock';
 import { MAX_GUESSES } from '../utils/GameUtils';
 import { getInitialBoard, getRandomWord } from '../utils/GameUtils';
 import { useDispatch, useSelector } from 'react-redux';
-import { setWordle, setBoard, setGuess, setGuessList, setDisabled, setOver, setRow, } from '../redux/actions';
+import { setWordle, setBoard, setGuess, setDisabled, setOver, setRow, } from '../redux/actions';
 import OverScreen from './OverScreen';
 
 const GameScreen = () => {
-    const { wordle, board, guessList, over, row } = useSelector(state => state.gameReducer);
+    const { wordle, board, over, row } = useSelector(state => state.gameReducer);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -18,29 +17,14 @@ const GameScreen = () => {
             dispatch(setWordle(getRandomWord().toUpperCase()));
             dispatch(setBoard(getInitialBoard()));
             dispatch(setGuess(''))
-            dispatch(setGuessList([]));
             dispatch(setDisabled([]));
             dispatch(setRow(0));
         }
-    }, [over])
-
-    // useEffect(() => {
-    //     const guessLength = guessList.length;
-    //     if (guessList[guessLength - 1] === wordle || guessLength === MAX_GUESSES) {
-    //         dispatch(setOver(true));
-    //     } else {
-    //         const list = [];
-    //         guessList.forEach(word => {
-    //             word.split('').forEach(letter => {
-    //                 if (!wordle.includes(letter)) list.push(letter);
-    //             })
-    //         });
-    //         dispatch(setDisabled(list));
-    //     }
-    // }, [guessList])
+    }, [over]); // initial the game
 
     useEffect(() => {
-        if ((board && board[row]?.join('') == wordle) || row === MAX_GUESSES) {
+        if ((board && row > 0 && board[row - 1].join('') == wordle)
+            || row === MAX_GUESSES) {
             dispatch(setOver(true));
         } else {
             var list = [];
@@ -51,16 +35,22 @@ const GameScreen = () => {
             });
             dispatch(setDisabled(list));
         }
-    }, [row])
+    }, [row]) // change row by guessing a word. If true or over => set over. Elsa present hint.
+
+    useEffect(() => {
+        console.log(wordle);
+    }, [wordle]); // reveal the wordle
 
     return (
         <View style={styles.fg1}>
             <Modal
                 visible={over}
                 transparent
+                animationType='slide'
             >
                 <OverScreen />
             </Modal>
+
             {board.map((rowValue, rowIndex) => {
                 return (
                     <View key={rowIndex} style={styles.row}>
@@ -83,37 +73,6 @@ const GameScreen = () => {
                     </View>
                 );
             })}
-
-            {/* {board.map((row, rowIndex) => {
-                return (
-                    <View key={rowIndex} style={styles.row}>
-                        {row.map((_, colIndex) => {
-                            const guessLetter = guessList[rowIndex]?.[colIndex];
-                            var state;
-                            switch (guessLetter) {
-                                case wordle[colIndex]:
-                                    state = TextBlockState.CORRECT;
-                                    break;
-                                case undefined:
-                                    state = TextBlockState.GUESS;
-                                    break;
-                                default:
-                                    if (wordle.includes(guessLetter)) state = TextBlockState.POSSIBLE;
-                                    else state = TextBlockState.INCORRECT;
-                            }
-
-                            const letterToShow =
-                                rowIndex === guessList.length ? guess[colIndex] : guessLetter;
-
-                            return (
-                                <View style={styles.mh2} key={'boxId-' + colIndex}>
-                                    <TextBlock text={letterToShow || ''} state={state} />
-                                </View>
-                            );
-                        })}
-                    </View>
-                );
-            })} */}
 
             <View style={styles.bottomContainer}>
                 <Keyboard />

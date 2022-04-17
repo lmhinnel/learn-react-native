@@ -1,7 +1,6 @@
 export const SET_WORDLE = 'SET_WORDLE';
 export const SET_BOARD = 'SET_BOARD';
 export const SET_GUESS = 'SET_GUESS';
-export const SET_GUESS_LIST = 'SET_GUESS_LIST';
 export const SET_OVER = 'SET_OVER';
 export const SET_DISABLED = 'SET_DISABLED';
 export const SET_ROW = 'SET_ROW';
@@ -24,13 +23,6 @@ export const setGuess = (guess) => {
     return ({
         type: SET_GUESS,
         payload: guess,
-    });
-};
-
-export const setGuessList = (guessList) => {
-    return ({
-        type: SET_GUESS_LIST,
-        payload: guessList,
     });
 };
 

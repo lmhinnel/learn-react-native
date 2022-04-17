@@ -2,20 +2,18 @@ import {
     SET_WORDLE,
     SET_BOARD,
     SET_GUESS,
-    SET_GUESS_LIST,
     SET_OVER,
     SET_DISABLED,
     SET_ROW
 } from "./actions";
 
 const initialState = {
-    wordle: 'xxxxx',
-    board: [],
-    guess: '',
-    guessList: [],
-    over: false,
-    disabled: [],
-    row: 0,
+    wordle: '', // pick a random word to guess
+    board: [], // board store characters
+    guess: '', // now guessing word
+    over: false, // game over or not
+    disabled: [], // characters that dont have in wordle
+    row: 0, // current guessing row
 }
 
 function gameReducer(state = initialState, action) {
@@ -26,8 +24,6 @@ function gameReducer(state = initialState, action) {
             return { ...state, board: action.payload };
         case SET_GUESS:
             return { ...state, guess: action.payload };
-        case SET_GUESS_LIST:
-            return { ...state, guessList: action.payload };
         case SET_OVER:
             return { ...state, over: action.payload };
         case SET_DISABLED:

@@ -4,18 +4,29 @@ import { GlobalStyles } from '../styles/GlobalStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOver } from '../redux/actions';
 import CPressable from '../components/Cpressable';
+import { MAX_GUESSES } from '../utils/GameUtils';
 
 export default function OverScreen() {
-    const { wordle } = useSelector(state => state.gameReducer);
+    const { wordle, row } = useSelector(state => state.gameReducer);
     const dispatch = useDispatch();
 
     return (
         <View style={[GlobalStyles.container, styles.container]}>
             <View style={[GlobalStyles.container, styles.center]}>
-                <Text style={[GlobalStyles.text, styles.header]}>GAME OVER! </Text>
-                <Text style={[GlobalStyles.text, styles.text]}>
-                    The wordle: {wordle}.
-                </Text>
+                {
+                    row == MAX_GUESSES ?
+                        <View style={GlobalStyles.container}>
+                            <Text style={[GlobalStyles.text, styles.header]}>YOU LOSE! </Text>
+                            <Text style={[GlobalStyles.text, styles.text]}>
+                                The wordle: {wordle}.
+                            </Text>
+                        </View>
+                        :
+                        <View style={GlobalStyles.container}>
+                            <Text style={[GlobalStyles.text, styles.header]}>Sugoi desune! </Text>
+                            <Text style={[GlobalStyles.text, styles.text]}>Scrore: {row}/{MAX_GUESSES}.</Text>
+                        </View>
+                }
                 <CPressable text="Play Again " onPress={() => dispatch(setOver(false))} />
             </View>
         </View>
